@@ -4,7 +4,6 @@ import sys
 import math
 from threading import Timer
 
-
 # initial variables
 # -------------------------------
 # capitalized because they are global and static
@@ -84,9 +83,7 @@ def draw_board(board):
                 pygame.draw.circle(screen, YELLOW, (int(c * SQUARESIZE + SQUARESIZE/2), int(r* SQUARESIZE + SQUARESIZE + SQUARESIZE/2)), circle_radius)
 
     pygame.display.update()
-    
-def end_game():
-    game_over = True
+
 
 
 
@@ -94,16 +91,21 @@ def end_game():
 # -------------------------------
 # initializing the board
 board = create_board()
-print(board)
 
 # initially nobody has won yet
 game_over = False
+
+not_over = True
+
+def end_game():
+    global game_over
+    game_over = True
+    print(game_over)
 
 # initialy it is player 1's turn
 turn = 0
 
 pygame.init()
-
 SQUARESIZE = 100
 
 width = COLS * SQUARESIZE
@@ -131,7 +133,7 @@ while not game_over:
         if event.type == pygame.QUIT:
             sys.exit()
 
-        if event.type == pygame.MOUSEMOTION:
+        if event.type == pygame.MOUSEMOTION and not_over:
             pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
             xpos = pygame.mouse.get_pos()[0]
             if turn == 0:
@@ -140,7 +142,7 @@ while not game_over:
                 pygame.draw.circle(screen, YELLOW, (xpos, int(SQUARESIZE/2)), circle_radius )
         pygame.display.update()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and not_over:
             pygame.draw.rect(screen, BLACK, (0,0, width, SQUARESIZE))
             # ask for player 1 inupt
             if turn == 0:
@@ -156,9 +158,9 @@ while not game_over:
                         print("PLAYER 1 WINS!")
                         label = my_font.render("PLAYER 1 WINS!", 1, RED)
                         screen.blit(label, (40, 10))
+                        not_over = False
                         t = Timer(3.0, end_game)
                         t.start()
-                        #game_over = True
 
             # ask for player 2 input
             else:
@@ -173,17 +175,13 @@ while not game_over:
                         print("PLAYER 2 WINS!")
                         label = my_font.render("PLAYER 1 WINS!", 1, YELLOW)
                         screen.blit(label, (40, 10))
+                        not_over = False
                         t = Timer(3.0, end_game)
                         t.start()
-                        #game_over = True
 
-            print(board)
             draw_board(board)
 
             # increment turn by 1
             turn += 1
             # this will alternate between 0 and 1 withe very turn
             turn = turn % 2
-
-            #if game_over:
-            #    pygame.time.wait(3000)
