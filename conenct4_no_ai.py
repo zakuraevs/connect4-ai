@@ -136,10 +136,12 @@ while not game_over:
         if event.type == pygame.MOUSEMOTION and not_over:
             pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
             xpos = pygame.mouse.get_pos()[0]
+
             if turn == 0:
                 pygame.draw.circle(screen, RED, (xpos, int(SQUARESIZE/2)), circle_radius )
             else: 
                 pygame.draw.circle(screen, YELLOW, (xpos, int(SQUARESIZE/2)), circle_radius )
+
         pygame.display.update()
 
         if event.type == pygame.MOUSEBUTTONDOWN and not_over:
