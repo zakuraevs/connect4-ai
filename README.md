@@ -2,7 +2,7 @@
 
 A python implementation of the connect 4 game with an AI opponent based on the minimax algorithm with alpha-beta pruning.
 
-![connect 4 gameplay vs ai](blob:https://chemumu.imgur.com/783f29ca-f775-4e8a-b5e9-6d0ff19c1ad0)
+![connect 4 gameplay vs ai](https://i.imgur.com/luzzVlJ.gif)
 
 This implementation is based on Keith Gali's tutorials: 
 
