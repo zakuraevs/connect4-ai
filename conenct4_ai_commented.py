@@ -42,22 +42,26 @@ def create_board():
     board = np.zeros((ROWS, COLS))
     return board
 
-# add a piece to a given location, ie set a position in the matrix as 1 or 2
+
+# add a piece to a given location, i.e., set a position in the matrix as 1 or 2
 def drop_piece(board, row, col, piece):
     board[row][col] = piece
 
-# checking that the top row of the selected column is still not fileld
-# ie that there is still space in the current column
+
+# checking that the top row of the selected column is still not filled
+# i.e., that there is still space in the current column
 # note that indexing starts at 0
 def is_valid_location(board, col):
     return board[0][col] == 0
 
+
 # checking where the piece will fall in the current column
-# ie finding the first zero row in given column
+# i.e., finding the first zero row in the given column
 def get_next_open_row(board, col):
     for r in range(ROWS-1, -1, -1):
         if board[r][col] == 0:
             return r
+
 
 # calculating if the current state of the board for player or AI is a win
 def winning_move(board, piece):
@@ -85,8 +89,9 @@ def winning_move(board, piece):
             if board[r][c] == piece and board[r-1][c-1] == piece and board[r-2][c-2] == piece and board[r-3][c-3] == piece:
                 return True
 
+
 # visually representing the board using pygame
-# for each position in the matrixm the board is either filled with an empty black circle, or a palyer/AI red/yellow circle
+# for each position in the matrix the board is either filled with an empty black circle, or a palyer/AI red/yellow circle
 def draw_board(board):
     for c in range(COLS):
         for r in range(ROWS):
@@ -100,7 +105,8 @@ def draw_board(board):
 
     pygame.display.update()
 
-# evaluate a 'winod' of 4 locations in a row based on what pieces it contains
+
+# evaluate a 'window' of 4 locations in a row based on what pieces it contains
 # the values used can be experimented with
 def evaluate_window(window, piece):
     # by default the oponent is the player
@@ -173,12 +179,12 @@ def is_terminal_node(board):
     return winning_move(board, PLAYER_PIECE) or winning_move(board, AI_PIECE) or len(get_valid_locations(board)) == 0
 
 
-# the algorithm calculating the best move to make given a depth of the search tree
-# depth is how many layers algorithm scores boards. Complexity grows exponentially
-# alpha and beta are best scores a side can achieve assuming the opponetn makes the best paly
-# more on alpha-beta pruning here: https://www.youtube.com/watch?v=l-hh51ncgDI
-# maximizing_palyer isa  boolean value that tells whether we are maximizing or minimizing
-# in this implementation, AI is maximizing
+# The algorithm calculating the best move to make given a depth of the search tree.
+# Depth is how many layers algorithm scores boards. Complexity grows exponentially.
+# Alpha and beta are best scores a side can achieve assuming the opponent makes the best play.
+# More on alpha-beta pruning here: https://www.youtube.com/watch?v=l-hh51ncgDI.
+# maximizing_palyer is a boolean value that tells whether we are maximizing or minimizing
+# in this implementation, AI is maximizing.
 def minimax(board, depth, alpha, beta, maximizing_player):
 
     # all valid locations on the board
@@ -210,7 +216,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
         # this will be the optimal column. Initially it is random
         column = random.choice(valid_locations)
 
-        # for every valid columnd, we simulate droppina  piece with the help of a board copy
+        # for every valid column, we simulate dropping a piece with the help of a board copy
         # and run the minimax on it with decresed depth and switched player
         for col in valid_locations:
             row = get_next_open_row(board, col)
@@ -248,6 +254,7 @@ def minimax(board, depth, alpha, beta, maximizing_player):
                 break
         return column, value
 
+
 # get all columns where a piece can be
 def get_valid_locations(board):
     valid_locations = []
@@ -264,7 +271,6 @@ def end_game():
     global game_over
     game_over = True
     print(game_over)
-
 
 
 # various state tracker variables taht use the above fucntions
@@ -307,7 +313,7 @@ pygame.display.update()
 # -------------------------------
 
 # loop that runs while the game_over variable is false,
-# ie someone hasn't placed 4 in a row yet
+# i.e., someone hasn't placed 4 in a row yet
 while not game_over:
 
     # for every player event
@@ -357,10 +363,10 @@ while not game_over:
         pygame.display.update()
 
                      
-    # aif its the AI's turn
+    # if its the AI's turn
     if turn == AI_TURN and not game_over and not_over:
 
-        # the column to drop in is found using the minimax
+        # the column to drop in is found using minimax
         col, minimax_score = minimax(board, 5, -math.inf, math.inf, True)
 
         if is_valid_location(board, col):
